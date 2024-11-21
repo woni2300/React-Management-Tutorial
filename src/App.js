@@ -12,18 +12,32 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing(3),
     overflowX: 'auto',
+    display: 'flex',
+    justifyContent: 'center',
   },
   table: {
+    maxWidth: 1080,
     minWidth: 1080,
+  },
+  tableHead: {
+    backgroundColor: '#16423C',
+    color: '#E9EFEC',
+    fontWeight: 'bold'
+  },
+  tableRow1: {
+    backgroundColor: '#6A9C89',
+
+  },
+  tableRow2: {
+    backgroundColor: '#C4DAD2',
+
   },
 });
 
 const colProperties = [
-  "번호","이미지","이름","생년월일","성별","직업"
+  "번호", "이미지", "이름", "생년월일", "성별", "직업"
 ]
-
 
 const customers = [
   {
@@ -50,6 +64,30 @@ const customers = [
     gender: '남',
     job: '대학생',
   },
+  {
+    id: '4',
+    image: 'https://dummyimage.com/64/C4DAD2/ffffff',
+    name: '홍길동2',
+    birthDay: '961224',
+    gender: '남',
+    job: '대학생',
+  },
+  {
+    id: '5',
+    image: 'https://dummyimage.com/64/16423C/ffffff',
+    name: '홍길동2',
+    birthDay: '961224',
+    gender: '남',
+    job: '대학생',
+  },
+  {
+    id: '6',
+    image: 'https://dummyimage.com/64/E9EFEC/16423C',
+    name: '홍길동2',
+    birthDay: '961224',
+    gender: '남',
+    job: '대학생',
+  },
 ];
 
 class App extends Component {
@@ -61,24 +99,29 @@ class App extends Component {
           <TableHead>
             <TableRow>
               {
-                colProperties.map(col=>{
-                  return <TableCell>{col}</TableCell>
+                colProperties.map(col => {
+                  return <TableCell className={classes.tableHead}>{col}</TableCell>
                 })
               }
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers.map(customer => (
-              <Customer
-                
-                id={customer.id}
-                name={customer.name}
-                image={customer.image}
-                birthDay={customer.birthDay}
-                gender={customer.gender}
-                job={customer.job}
-              />
-            ))}
+            {
+              customers.map((customer, index) => {
+                let className = (index % 2 === 0) ? classes.tableRow2 : classes.tableRow1;
+                return (
+                  <Customer
+                    className={className}
+                    id={customer.id}
+                    name={customer.name}
+                    image={customer.image}
+                    birthDay={customer.birthDay}
+                    gender={customer.gender}
+                    job={customer.job} />
+                );
+              }
+              )
+            }
           </TableBody>
         </Table>
       </Paper>

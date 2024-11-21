@@ -5,7 +5,7 @@ class Customer extends React.Component {
     render() {
         return (
             <>
-                <TableRow>
+                <TableRow className={this.props.className}>
                     <TableCell>
                         <p>{this.props.id}</p>
                     </TableCell>
