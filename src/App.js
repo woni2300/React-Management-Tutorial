@@ -20,6 +20,11 @@ const styles = theme => ({
   },
 });
 
+const colProperties = [
+  "번호","이미지","이름","생년월일","성별","직업"
+]
+
+
 const customers = [
   {
     id: '1',
@@ -55,18 +60,17 @@ class App extends Component {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>번호</TableCell>
-              <TableCell>이미지</TableCell>
-              <TableCell>이름</TableCell>
-              <TableCell>생년월일</TableCell>
-              <TableCell>성별</TableCell>
-              <TableCell>직업</TableCell>
+              {
+                colProperties.map(col=>{
+                  return <TableCell>{col}</TableCell>
+                })
+              }
             </TableRow>
           </TableHead>
           <TableBody>
             {customers.map(customer => (
               <Customer
-                key={customer.id}
+                
                 id={customer.id}
                 name={customer.name}
                 image={customer.image}

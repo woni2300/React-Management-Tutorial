@@ -1,13 +1,7 @@
 import React from 'react';
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
-import Table from '@material-ui/core/TableCell'
-
-
 class Customer extends React.Component {
-
-
-
     render() {
         return (
             <>
@@ -30,7 +24,6 @@ class Customer extends React.Component {
                     <TableCell>
                         <p>{this.props.job}</p>
                     </TableCell>
-
                 </TableRow>
             </>
         )
