@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
+import  CircularProgress  from '@material-ui/core/CircularProgress';
 
 const styles = theme => ({
   root: {
@@ -33,30 +34,48 @@ const styles = theme => ({
     backgroundColor: '#C4DAD2',
 
   },
+  progress : {
+    margin: theme.spacing(2)
+  }
 });
 
 const colProperties = [
   "번호", "이미지", "이름", "생년월일", "성별", "직업"
 ]
 
-
+/**
+ * 1) constructor ()
+ * 2) componentWillMount()
+ * 3) render()
+ * 4) componentMount()
+ * 
+ * props or state = > shouldComponentUpdate
+ */
 
 class App extends Component {
 
   state = {
-    customers : ""
+    customers : "",
+    completed : 0,
   }
 
   componentDidMount(){
-    this.callApi()
-    .then(res => this.setState({ customers: res }))
-    .catch((err) => console.log(err));
+    this.timer = setInterval(this.progress, 20);
+
+
+     this.callApi().then(res => this.setState({ customers: res })).catch((err) => console.log(err));
   }
 
   callApi = async ()=>{
     const response = await fetch('/api/customers');
     const body = await response.json();
     return body;
+  }
+
+  progress = ()=>{
+    const {completed} = this.state;
+    
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1 })
   }
 
   
@@ -76,21 +95,21 @@ class App extends Component {
           </TableHead>
           <TableBody>
             { this.state.customers ?
-              this.state.customers.map((customer, index) => {
-                let className = (index % 2 === 0) ? classes.tableRow2 : classes.tableRow1;
-                return (
-                  <Customer
-                    className={className}
-                    key={customer.key}
-                    id={customer.id}
-                    name={customer.name}
-                    image={customer.image}
-                    birthDay={customer.birthDay}
-                    gender={customer.gender}
-                    job={customer.job} />
-                );
-              } 
-              ) : ""
+              this.state.customers.map(
+                (customer, index) => {
+                  let className = (index % 2 === 0) ? classes.tableRow2 : classes.tableRow1;
+                  return (
+                    <Customer className={className} key={customer.key} id={customer.id} name={customer.name} image={customer.image} birthDay={customer.birthDay} gender={customer.gender} job={customer.job} />
+                  );
+                } 
+              )
+               :
+
+              <TableRow>
+                <TableCell>
+                  <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+                </TableCell>
+              </TableRow>
             }
           </TableBody>
         </Table>
