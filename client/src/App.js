@@ -39,58 +39,27 @@ const colProperties = [
   "번호", "이미지", "이름", "생년월일", "성별", "직업"
 ]
 
-const customers = [
-  {
-    id: '1',
-    image: 'https://dummyimage.com/64/555555/ffffff',
-    name: '홍길동',
-    birthDay: '961222',
-    gender: '남',
-    job: '대학생',
-  },
-  {
-    id: '2',
-    image: 'https://dummyimage.com/64/777777/ffffff',
-    name: '홍길동1',
-    birthDay: '961223',
-    gender: '남',
-    job: '대학생',
-  },
-  {
-    id: '3',
-    image: 'https://dummyimage.com/64/111111/ffffff',
-    name: '홍길동2',
-    birthDay: '961224',
-    gender: '남',
-    job: '대학생',
-  },
-  {
-    id: '4',
-    image: 'https://dummyimage.com/64/C4DAD2/ffffff',
-    name: '홍길동2',
-    birthDay: '961224',
-    gender: '남',
-    job: '대학생',
-  },
-  {
-    id: '5',
-    image: 'https://dummyimage.com/64/16423C/ffffff',
-    name: '홍길동2',
-    birthDay: '961224',
-    gender: '남',
-    job: '대학생',
-  },
-  {
-    id: '6',
-    image: 'https://dummyimage.com/64/E9EFEC/16423C',
-    name: '홍길동2',
-    birthDay: '961224',
-    gender: '남',
-    job: '대학생',
-  },
-];
+
 
 class App extends Component {
+
+  state = {
+    customers : ""
+  }
+
+  componentDidMount(){
+    this.callApi()
+    .then(res => this.setState({ customers: res }))
+    .catch((err) => console.log(err));
+  }
+
+  callApi = async ()=>{
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
+  
   render() {
     const { classes } = this.props; // props에서 classes 추출
     return (
@@ -106,12 +75,13 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-              customers.map((customer, index) => {
+            { this.state.customers ?
+              this.state.customers.map((customer, index) => {
                 let className = (index % 2 === 0) ? classes.tableRow2 : classes.tableRow1;
                 return (
                   <Customer
                     className={className}
+                    key={customer.key}
                     id={customer.id}
                     name={customer.name}
                     image={customer.image}
@@ -119,8 +89,8 @@ class App extends Component {
                     gender={customer.gender}
                     job={customer.job} />
                 );
-              }
-              )
+              } 
+              ) : ""
             }
           </TableBody>
         </Table>
