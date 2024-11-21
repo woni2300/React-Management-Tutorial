@@ -1,0 +1,7 @@
+{
+    "host" : "management-tutorial.cro0yogqeckw.ap-southeast-2.rds.amazonaws.com",
+    "user" : "user",
+    "password" :"wsdr0083",
+    "port" : "3306",
+    "database" : "management"
+}
