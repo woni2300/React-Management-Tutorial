@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Customer from './Components/Customer';
+import CustomerAdd from './Components/CustomerAdd';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -85,6 +86,7 @@ class App extends Component {
   render() {
     const { classes } = this.props; // props에서 classes 추출
     return (
+      <>
       <Paper className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
@@ -117,6 +119,10 @@ class App extends Component {
           </TableBody>
         </Table>
       </Paper>
+      <CustomerAdd></CustomerAdd>
+
+      </>
+
     );
   }
 }
