@@ -11,7 +11,7 @@ class CustomerAdd extends React.Component {
             birthDay: '',
             gender: '',
             job: '',
-            fileName: ''
+            filename: ''
         }
     }
 
@@ -19,14 +19,30 @@ class CustomerAdd extends React.Component {
         e.preventDefault();
         this.addCustomer().then((res)=>{
             console.log(res);
+            this.setState({
+                file: null,
+                userName: '',
+                birthDay: '',
+                gender: '',
+                job: '',
+                filename: ''
+            })
+            window.location.reload();
+      
+        }).catch((err)=>{
+            console.log(err);
         })
+  
+     
     }
 
     addCustomer = ()=>{
-        const url = '/api/customersAdd';
+        
+        const url = '/api/customers';
         const formData = new FormData();
+        
         formData.append('image',this.state.file);
-        formData.append('userName',this.state.userName);
+        formData.append('name',this.state.userName);
         formData.append('birthDay',this.state.birthDay);
         formData.append('gender',this.state.gender);
         formData.append('job',this.state.job);
@@ -44,7 +60,7 @@ class CustomerAdd extends React.Component {
     handleFileChange = (e)=>{
         this.setState({
             file : e.target.files[0],
-            fileName : e.target.value
+            filename : e.target.value
         })
     }
 
@@ -61,7 +77,7 @@ class CustomerAdd extends React.Component {
             <>
                 <form onSubmit={this.handleFormSubmit}>
                     <h1>고객추가</h1>
-                    프로필이미지 : <input type='file' name='file' file={this.state.file} value={this.state.fileName}  onChange={this.handleFileChange}></input>
+                    프로필이미지 : <input type='file' name='file' file={this.state.file} value={this.state.filename}  onChange={this.handleFileChange}></input>
                     이름 : <input type='text' name="userName" value={this.state.userName} onChange={this.handleValueChange}></input>
                     생년월일 : <input type='text' name="birthDay" value={this.state.birthDay} onChange={this.handleValueChange}></input>
                     성별 : <input type='text' name="gender" value={this.state.gender} onChange={this.handleValueChange}></input>
