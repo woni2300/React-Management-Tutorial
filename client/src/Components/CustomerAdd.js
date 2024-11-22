@@ -1,5 +1,6 @@
 import React from 'react';
-import post  from 'axios';
+import axios  from 'axios';
+
 
 
 class CustomerAdd extends React.Component {
@@ -38,21 +39,26 @@ class CustomerAdd extends React.Component {
 
     addCustomer = ()=>{
         
-        const url = '/api/customers';
+        const url = '/api/customerAdd';
         const formData = new FormData();
         
         formData.append('image',this.state.file);
         formData.append('name',this.state.userName);
-        formData.append('birthDay',this.state.birthDay);
+        formData.append('birthday',this.state.birthday);
         formData.append('gender',this.state.gender);
         formData.append('job',this.state.job);
         const config = {
-            header:{
-                'content-type' : 'multipart/form-data'
+            headers:{
+                'Content-type' : 'multipart/form-data'
             }
         }
 
-        return post(url, formData, config);
+        return axios({
+            method: 'post', // 명시적으로 POST 요청
+            url: url,
+            data: formData,
+            headers: config.headers,
+        });
 
     }
 
@@ -79,7 +85,7 @@ class CustomerAdd extends React.Component {
                     <h1>고객추가</h1>
                     프로필이미지 : <input type='file' name='file' file={this.state.file} value={this.state.filename}  onChange={this.handleFileChange}></input>
                     이름 : <input type='text' name="userName" value={this.state.userName} onChange={this.handleValueChange}></input>
-                    생년월일 : <input type='text' name="birthDay" value={this.state.birthDay} onChange={this.handleValueChange}></input>
+                    생년월일 : <input type='text' name="birthday" value={this.state.birthday} onChange={this.handleValueChange}></input>
                     성별 : <input type='text' name="gender" value={this.state.gender} onChange={this.handleValueChange}></input>
                     직업 : <input type='text' name="job" value={this.state.job} onChange={this.handleValueChange}></input>
                     <button type='submit'>추가하기</button>

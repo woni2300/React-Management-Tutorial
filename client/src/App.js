@@ -104,7 +104,7 @@ class App extends Component {
                 (customer, index) => {
                   let className = (index % 2 === 0) ? classes.tableRow2 : classes.tableRow1;
                   return (
-                    <Customer className={className} key={customer.key} id={customer.id} name={customer.name} image={customer.image} birthDay={customer.birthDay} gender={customer.gender} job={customer.job} />
+                    <Customer className={className} key={customer.key} id={customer.id} name={customer.name} image={customer.image} birthday={customer.birthday} gender={customer.gender} job={customer.job} />
                   );
                 } 
               )
