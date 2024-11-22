@@ -41,7 +41,7 @@ const drawerWidth = 240;
 const styles = theme => ({
   root: {
     width: '100%',
-    minWidth:1080,
+    minWidth: 1080,
   },
 
   appBar: {
@@ -59,17 +59,17 @@ const styles = theme => ({
     }),
   },
 
-  paper:{
-    marginLeft:18,
-    marginRight:18
+  paper: {
+    marginLeft: 18,
+    marginRight: 18
   },
-  menu:{
-    marginTop:15,
-    marginBottom:15,
-    display:'flex',
-    justifyContent:'center',
+  menu: {
+    marginTop: 15,
+    marginBottom: 15,
+    display: 'flex',
+    justifyContent: 'center',
   },
-  table: {    
+  table: {
     minWidth: 1080,
   },
   tableHead: {
@@ -148,14 +148,16 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
+    marginTop: theme.spacing(5),
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth,
+    marginLeft: 0,
   },
   contentShift: {
+    marginTop: theme.spacing(9),
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -181,8 +183,8 @@ class App extends Component {
     this.state = {
       customers: '',
       completed: 0,
-      searchKeyword:'',
-      isDrawer : false,
+      searchKeyword: '',
+      isDrawer: false,
     }
   }
 
@@ -190,8 +192,8 @@ class App extends Component {
     this.setState({
       customers: '',
       completed: 0,
-      searchKeyword:'',
-      isDrawer:false,
+      searchKeyword: '',
+      isDrawer: false,
     })
     this.callApi().then(res => {
       this.setState({ customers: res })
@@ -228,22 +230,22 @@ class App extends Component {
     this.setState({ completed: completed >= 100 ? 0 : completed + 1 })
   }
 
-  handleValueChange = (e)=>{
+  handleValueChange = (e) => {
     let nextState = {};
     nextState[e.target.name] = e.target.value;
     this.setState(nextState);
 
   }
   filteredComponents = (customer) => {
-    const {classes} = this.props;
+    const { classes } = this.props;
 
-    customer = customer.filter((c)=>{
+    customer = customer.filter((c) => {
       return c.name.indexOf(this.state.searchKeyword) > -1;
     })
 
-    return customer.map((customer,index)=>{
+    return customer.map((customer, index) => {
       let className = "";
-      className = (index % 2 === 0) ? classes.tableRow1 : classes.tableRow2;      
+      className = (index % 2 === 0) ? classes.tableRow1 : classes.tableRow2;
       return <Customer stateRefresh={this.stateRefresh} className={className} key={customer.key} id={customer.id} name={customer.name} image={customer.image} birthday={customer.birthday} gender={customer.gender} job={customer.job} />
     })
 
@@ -258,19 +260,19 @@ class App extends Component {
       "번호", "이미지", "이름", "생년월일", "성별", "직업", "설정"
     ]
     const { isDrawer } = this.state;
-    
+
     return (
       <div className={classes.root}>
-         <CssBaseline />
+        <CssBaseline />
         <AppBar
-           position="fixed"
-          className={isDrawer ?  classes.appBarShift : classes.appBar }
-        
+          position="fixed"
+          className={isDrawer ? classes.appBarShift : classes.appBar}
+
         >
           <Toolbar>
             <IconButton
               edge="start"
-              
+
               color="inherit"
               aria-label="open drawer"
               onClick={this.handleDrawerOpen}
@@ -307,7 +309,7 @@ class App extends Component {
           classes={{
             paper: classes.drawerPaper,
           }}
-          
+
         >
           <div className={classes.drawerHeader}>
             <IconButton onClick={this.handleDrawerClose} >
@@ -336,11 +338,11 @@ class App extends Component {
         </Drawer>
 
 
-        <div className={classes.menu} >
-          <CustomerAdd stateRefresh={this.stateRefresh} />
-
-        </div>
         <Paper className={isDrawer ? classes.contentShift : classes.content} >
+
+          <div className={classes.menu} >
+            <CustomerAdd stateRefresh={this.stateRefresh} />
+          </div>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
@@ -353,7 +355,7 @@ class App extends Component {
             </TableHead>
             <TableBody>
               {this.state.customers ?
-                this.filteredComponents(this.state.customers,classes.tableRow1)
+                this.filteredComponents(this.state.customers, classes.tableRow1)
                 :
 
                 <TableRow>
@@ -365,7 +367,7 @@ class App extends Component {
             </TableBody>
           </Table>
         </Paper>
-        
+
 
       </div>
 
