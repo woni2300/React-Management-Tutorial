@@ -122,13 +122,15 @@ class App extends Component {
     this.state = {
       customers: '',
       completed: 0,
+      searchKeyword:'',
     }
   }
 
   stateRefresh = () => {
     this.setState({
       customers: '',
-      completed: 0
+      completed: 0,
+      searchKeyword:'',
     })
     this.callApi().then(res => {
       this.setState({ customers: res })
@@ -156,8 +158,28 @@ class App extends Component {
     this.setState({ completed: completed >= 100 ? 0 : completed + 1 })
   }
 
+  handleValueChange = (e)=>{
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
+
+  }
+  filteredComponents = (customer,className) => {
+
+    customer = customer.filter((c)=>{
+      return c.name.indexOf(this.state.searchKeyword) > -1;
+    })
+
+    return customer.map((customer)=>{
+      return <Customer stateRefresh={this.stateRefresh} className={className} key={customer.key} id={customer.id} name={customer.name} image={customer.image} birthday={customer.birthday} gender={customer.gender} job={customer.job} />
+    })
+
+  }
 
   render() {
+
+
+
     const { classes } = this.props; // props에서 classes 추출
     const colProperties = [
       "번호", "이미지", "이름", "생년월일", "성별", "직업", "설정"
@@ -189,6 +211,9 @@ class App extends Component {
                   input: classes.inputInput,
                 }}
                 inputProps={{ 'aria-label': 'search' }}
+                name="searchKeyword"
+                value={this.state.searchKeyword}
+                onChange={this.handleValueChange}
               />
             </div>
           </Toolbar>
@@ -211,14 +236,7 @@ class App extends Component {
             </TableHead>
             <TableBody>
               {this.state.customers ?
-                this.state.customers.map(
-                  (customer, index) => {
-                    let className = (index % 2 === 0) ? classes.tableRow2 : classes.tableRow1;
-                    return (
-                      <Customer stateRefresh={this.stateRefresh} className={className} key={customer.key} id={customer.id} name={customer.name} image={customer.image} birthday={customer.birthday} gender={customer.gender} job={customer.job} />
-                    );
-                  }
-                )
+                this.filteredComponents(this.state.customers,classes.tableRow1)
                 :
 
                 <TableRow>
