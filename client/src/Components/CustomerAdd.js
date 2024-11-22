@@ -24,7 +24,7 @@ class CustomerAdd extends React.Component {
         this.state = {
             file: null,
             userName: '',
-            birthDay: '',
+            birthday: '',
             gender: '',
             job: '',
             filename: '',
@@ -39,7 +39,7 @@ class CustomerAdd extends React.Component {
         this.setState({
             file: null,
             userName: '',
-            birthDay: '',
+            birthday: '',
             gender: '',
             job: '',
             filename: '',
@@ -54,7 +54,7 @@ class CustomerAdd extends React.Component {
             this.setState({
                 file: null,
                 userName: '',
-                birthDay: '',
+                birthday: '',
                 gender: '',
                 job: '',
                 filename: '',
