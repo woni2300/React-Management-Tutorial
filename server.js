@@ -33,7 +33,7 @@ const upload = multer({ dest: './upload' }); // 업로드된 파일이 저장될
 app.get('/api/customers', (req, res) => {
     console.log('Fetching customer data...'); // 요청 로그
     connection.query(
-        "SELECT * FROM CUSTOMER", // 고객 테이블에서 모든 데이터 조회
+        "SELECT * FROM CUSTOMER where isDeleted =0", // 고객 테이블에서 모든 데이터 조회
         (err, rows, fields) => {
             if (err) {
                 console.error('Database query error:', err); // 오류 로그
@@ -57,7 +57,7 @@ app.post('/api/customerAdd', upload.single('image'), (req, res) => {
     }
 
     // 데이터베이스에 삽입할 SQL 및 값 설정
-    let sql = 'INSERT INTO CUSTOMER (image, name, birthDay, gender, job) VALUES (?, ?, ?, ?, ?);';
+    let sql = 'INSERT INTO CUSTOMER (image, name, birthDay, gender, job, createDate , isDeleted) VALUES (?, ?, ?, ?, ?, now(), 0 );';
     let image = '/image/' + req.file.filename; // 업로드된 이미지 경로
     let name = req.body.name; // 요청 바디에서 이름
     let birthday = req.body.birthday; // 요청 바디에서 생일
@@ -79,6 +79,14 @@ app.post('/api/customerAdd', upload.single('image'), (req, res) => {
         res.status(201).send(rows); // 데이터 삽입 성공 시 응답 반환
     });
 });
+
+app.delete('/api/customers/:id',(req,res)=>{
+    let sql = 'UPDATE CUSTOMER SET isDeleted = 1 WHERE id= ?';
+    let params = [req.params.id];
+    connection.query(sql,params,(err,rows,fields)=>{
+        res.send(rows);
+    })
+})
 
 // 서버 시작
 app.listen(port, () => console.log(`Listening on port ${port}`)); // 지정된 포트에서 서버 실행
