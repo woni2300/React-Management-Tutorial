@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import clsx from 'clsx';
 import './App.css';
-import Customer from './Components/Customer';
+import Customer from './Components/Customer/Customer';
 import CustomerAdd from './Components/Customer/CustomerAdd';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';

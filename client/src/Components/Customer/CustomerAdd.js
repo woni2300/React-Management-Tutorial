@@ -14,7 +14,7 @@ const styles = theme => ({
         display: 'none'
     },
     dialog: {
-        maxWidth: '270px'
+        maxWidth: '300px'
     },
     imagePreview: {
         width: '250px', // 크기 250px로 설정
