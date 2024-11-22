@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import clsx from 'clsx';
 import './App.css';
 import Customer from './Components/Customer';
-import CustomerAdd from './Components/CustomerAdd';
+import CustomerAdd from './Components/Customer/CustomerAdd';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,13 +20,45 @@ import fade from '@material-ui/core/styles/colorManipulator';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
+
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+
+
+
+const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
     width: '100%',
     minWidth:1080,
   },
+
+  appBar: {
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+
   paper:{
     marginLeft:18,
     marginRight:18
@@ -40,23 +73,17 @@ const styles = theme => ({
     minWidth: 1080,
   },
   tableHead: {
-    backgroundColor: '#16423C',
-    color: '#E9EFEC',
     fontWeight: 'bold'
   },
-  tableRow1: {
-    backgroundColor: '#6A9C89',
 
-  },
-  tableRow2: {
-    backgroundColor: '#C4DAD2',
-
-  },
   progress: {
     margin: theme.spacing(2)
   },
   menuButton: {
     marginRight: theme.spacing(2),
+  },
+  hide: {
+    display: 'none',
   },
   title: {
     flexGrow: 1,
@@ -104,6 +131,38 @@ const styles = theme => ({
       },
     },
   },
+
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
+  },
+  /////////////////끝////////////////////////////////
 });
 
 
@@ -123,6 +182,7 @@ class App extends Component {
       customers: '',
       completed: 0,
       searchKeyword:'',
+      isDrawer : false,
     }
   }
 
@@ -131,6 +191,7 @@ class App extends Component {
       customers: '',
       completed: 0,
       searchKeyword:'',
+      isDrawer:false,
     })
     this.callApi().then(res => {
       this.setState({ customers: res })
@@ -145,6 +206,15 @@ class App extends Component {
       this.setState({ customers: res })
     }).catch((err) => console.log(err));
   }
+
+  handleDrawerOpen = () => {
+    this.setState({ isDrawer: true });
+  };
+
+  handleDrawerClose = () => {
+    this.setState({ isDrawer: false });
+  };
+
 
   callApi = async () => {
     const response = await fetch('/api/customers');
@@ -164,13 +234,16 @@ class App extends Component {
     this.setState(nextState);
 
   }
-  filteredComponents = (customer,className) => {
+  filteredComponents = (customer) => {
+    const {classes} = this.props;
 
     customer = customer.filter((c)=>{
       return c.name.indexOf(this.state.searchKeyword) > -1;
     })
 
-    return customer.map((customer)=>{
+    return customer.map((customer,index)=>{
+      let className = "";
+      className = (index % 2 === 0) ? classes.tableRow1 : classes.tableRow2;      
       return <Customer stateRefresh={this.stateRefresh} className={className} key={customer.key} id={customer.id} name={customer.name} image={customer.image} birthday={customer.birthday} gender={customer.gender} job={customer.job} />
     })
 
@@ -184,16 +257,24 @@ class App extends Component {
     const colProperties = [
       "번호", "이미지", "이름", "생년월일", "성별", "직업", "설정"
     ]
+    const { isDrawer } = this.state;
     
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+         <CssBaseline />
+        <AppBar
+           position="fixed"
+          className={isDrawer ?  classes.appBarShift : classes.appBar }
+        
+        >
           <Toolbar>
             <IconButton
               edge="start"
-              className={classes.menuButton}
+              
               color="inherit"
               aria-label="open drawer"
+              onClick={this.handleDrawerOpen}
+              className={isDrawer ? classes.hide : classes.menuButton}
             >
               <MenuIcon />
             </IconButton>
@@ -218,12 +299,48 @@ class App extends Component {
             </div>
           </Toolbar>
         </AppBar>
+        <Drawer
+          className={classes.drawer}
+          variant="persistent"
+          anchor="left"
+          open={isDrawer}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          
+        >
+          <div className={classes.drawerHeader}>
+            <IconButton onClick={this.handleDrawerClose} >
+              {/* {this.props.theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />} */}
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+
+
         <div className={classes.menu} >
           <CustomerAdd stateRefresh={this.stateRefresh} />
 
         </div>
-        <Paper className={classes.paper} >
-
+        <Paper className={isDrawer ? classes.contentShift : classes.content} >
           <Table className={classes.table}>
             <TableHead>
               <TableRow>

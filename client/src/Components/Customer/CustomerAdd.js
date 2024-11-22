@@ -7,13 +7,22 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import { Radio } from '@material-ui/core';
 
 const styles = theme => ({
     hidden: {
         display: 'none'
     },
     dialog: {
-        maxWidth: '250px'
+        maxWidth: '270px'
+    },
+    imagePreview: {
+        width: '250px', // 크기 250px로 설정
+        minWidth:'250px',
+        minHeight:'250px',
+        marginTop: '10px',
+        border: '1px solid black'
+        
     }
 });
 
@@ -112,6 +121,10 @@ class CustomerAdd extends React.Component {
 
     render() {
         const { classes } = this.props;
+
+         // 선택된 파일에 대한 이미지 미리보기 URL
+         const previewImage = this.state.file ? URL.createObjectURL(this.state.file) : 'https://dummyimage.com/250/FFFFFF/00000';
+         
         return (
             <>                <div>
                 <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
@@ -121,18 +134,65 @@ class CustomerAdd extends React.Component {
                 <Dialog open={this.state.open} onClose={this.handleClickClose}>
                     <DialogTitle>고객추가</DialogTitle>
                     <DialogContent className={classes.dialog}   >
-                        <input className={classes.hidden} type='file' name='file' accept='image/*' id='raised-button-file' value={this.state.filename} onChange={this.handleFileChange}></input>
+                        <input
+                            className={classes.hidden}
+                            type='file'
+                            name='file'
+                            accept='image/*'
+                            id='raised-button-file'
+                            value={this.state.filename}
+                            onChange={this.handleFileChange}></input>
                         <label htmlFor="raised-button-file">
-                            <Button variant="contained" color='primary' component="span" name="file" >
+                            <Button
+                                variant="contained"
+                                color='primary'
+                                component="span"
+                                name="file" >
                                 {this.state.filename === "" ? "프로필 이미지 선택" : (this.state.filename.length >= 20 ? this.state.filename.substring(0, 19) + "..." : this.state.filename)}
                             </Button>
                         </label>
                         <br></br>
-                        
-                        <TextField label='이름' type='text' name="userName" value={this.state.userName} onChange={this.handleValueChange} />
-                        <TextField label='생년월일' type='text' name="birthday" value={this.state.birthday} onChange={this.handleValueChange} />
-                        <TextField label='성별' type='text' name="gender" value={this.state.gender} onChange={this.handleValueChange} />
-                        <TextField label='직업' type='text' name="job" value={this.state.job} onChange={this.handleValueChange} />
+
+                        {/* 이미지 미리보기 */}
+                        <img
+                            src={previewImage}
+                            alt="Preview"
+                            className={classes.imagePreview} />
+                        <br />
+
+                        <TextField
+                            label='이름'
+                            type='text'
+                            name="userName"
+                            value={this.state.userName}
+                            onChange={this.handleValueChange} />
+
+
+                        <TextField
+                            label='생년월일'
+                            type='date'
+                            name="birthday"
+                            value={this.state.birthday}
+                            onChange={this.handleValueChange}
+                            defaultValue={'2024-11-22'}
+                            InputLabelProps={{ shrink: true, }} />
+
+
+                        <TextField
+                            label='성별'
+                            type='text'
+                            name="gender"
+                            value={this.state.gender}
+                            onChange={this.handleValueChange}>
+                            
+                        </TextField>
+
+                        <TextField
+                            label='직업'
+                            type='text'
+                            name="job"
+                            value={this.state.job}
+                            onChange={this.handleValueChange} />
 
                     </DialogContent>
                     <DialogActions>
