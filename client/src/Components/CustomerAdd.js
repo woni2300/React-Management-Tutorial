@@ -128,7 +128,7 @@ class CustomerAdd extends React.Component {
                             </Button>
                         </label>
                         <br></br>
-                        <br></br>
+                        
                         <TextField label='이름' type='text' name="userName" value={this.state.userName} onChange={this.handleValueChange} />
                         <TextField label='생년월일' type='text' name="birthday" value={this.state.birthday} onChange={this.handleValueChange} />
                         <TextField label='성별' type='text' name="gender" value={this.state.gender} onChange={this.handleValueChange} />
@@ -137,7 +137,7 @@ class CustomerAdd extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button variant='contained' color='primary' onClick={this.handleFormSubmit}>추가하기</Button>
-                        <Button variant='outlined' onClick={this.handleClickClose}>취소하기</Button>
+                        <Button variant='outlined' color='primary' onClick={this.handleClickClose}>닫기</Button>
                     </DialogActions>
                 </Dialog>
             </div>
