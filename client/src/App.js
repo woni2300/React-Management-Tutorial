@@ -35,7 +35,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import DataGrid from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 
 
 
@@ -283,11 +283,17 @@ class App extends Component {
       )
     })
 
+    
   }
+
 
   render() {
 
 
+
+    
+
+    
 
     const { classes } = this.props; // props에서 classes 추출
     const colProperties = [
@@ -369,8 +375,7 @@ class App extends Component {
           <div className={classes.menu} >
             <CustomerAdd stateRefresh={this.stateRefresh} />
           </div>
-          
-          
+   
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
@@ -384,9 +389,7 @@ class App extends Component {
             <TableBody>
               {this.state.customers ?
                 this.filteredComponents(this.state.customers, classes.tableRow1)
-                :
-
-                <TableRow>
+                : <TableRow>
                   <TableCell>
                     <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed} />
                   </TableCell>
@@ -395,8 +398,6 @@ class App extends Component {
             </TableBody>
           </Table>
         </Paper>
-
-
       </div>
 
     );

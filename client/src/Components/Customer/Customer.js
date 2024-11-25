@@ -3,6 +3,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import CustomerDelete from './CustomerDelete';
 import CustomerInfo from './CustomerInfo'
+
 class Customer extends React.Component {
     constructor(props) {
         super(props);
