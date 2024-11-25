@@ -35,6 +35,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import DataGrid from '@mui/x-data-grid';
+
 
 
 
@@ -273,15 +275,11 @@ class App extends Component {
       className = (index % 2 === 0) ? classes.tableRow1 : classes.tableRow2;
       return (
         <Customer
+          key={customer.id}
           stateRefresh={this.stateRefresh}
           className={className}
-          key={customer.key}
-          id={customer.id}
-          name={customer.name}
-          image={customer.image}
-          birthday={customer.birthday}
-          gender={customer.gender}
-          job={customer.job} />
+          data={customer}
+          />
       )
     })
 
@@ -355,22 +353,14 @@ class App extends Component {
           </div>
           <Divider />
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            {['고객관리'].map((text, index) => (
               <ListItem button key={text}>
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
             ))}
           </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
+        
         </Drawer>
 
 
@@ -379,7 +369,7 @@ class App extends Component {
           <div className={classes.menu} >
             <CustomerAdd stateRefresh={this.stateRefresh} />
           </div>
-
+          
           
           <Table className={classes.table}>
             <TableHead>

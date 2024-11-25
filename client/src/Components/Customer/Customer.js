@@ -7,6 +7,7 @@ class Customer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            data : {},
             isInfo: false,
             selectCustomer: {}
         }
@@ -22,27 +23,27 @@ class Customer extends React.Component {
     render() {
         return (
             <>
-                <TableRow className={this.props.className} onDoubleClick={() => this.rowDoubleClick({ id: this.props.id, image: this.props.image, userName: this.props.name, birthday: this.props.birthday, gender: this.props.gender, job: this.props.job, })}>
+                <TableRow className={this.props.className} onDoubleClick={() => this.rowDoubleClick(this.props.data)}>
                     <TableCell>
-                        <p>{this.props.id}</p>
+                        <p>{this.props.data.id}</p>
                     </TableCell>
                     <TableCell>
-                        <img width={64} height={64} src={this.props.image} alt='profile' ></img>
+                        <img width={64} height={64} src={this.props.data.image} alt='profile' ></img>
                     </TableCell>
                     <TableCell>
-                        <p>{this.props.name}</p>
+                        <p>{this.props.data.name}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{this.props.birthday}</p>
+                        <p>{this.props.data.birthday}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{this.props.gender}</p>
+                        <p>{this.props.data.gender}</p>
                     </TableCell>
                     <TableCell>
-                        <p>{this.props.job}</p>
+                        <p>{this.props.data.job}</p>
                     </TableCell>
                     <TableCell>
-                        <CustomerDelete id={this.props.id} stateRefresh={this.props.stateRefresh} ></CustomerDelete>
+                        <CustomerDelete id={this.props.data.id} stateRefresh={this.props.stateRefresh} ></CustomerDelete>
                     </TableCell>
                 </TableRow>
 

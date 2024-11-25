@@ -30,7 +30,7 @@ class CustomerInfo extends React.Component {
         super(props);
         this.state = {
             file: null,
-            userName: this.props.selectCustomer.userName,
+            userName: this.props.selectCustomer.name,
             birthday: this.props.selectCustomer.birthday,
             gender: this.props.selectCustomer.gender,
             job: this.props.selectCustomer.job,
