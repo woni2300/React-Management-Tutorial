@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import clsx from 'clsx';
+
 import './App.css';
 import Customer from './Components/Customer/Customer';
 import CustomerAdd from './Components/Customer/CustomerAdd';
+
+
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,7 +18,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import fade from '@material-ui/core/styles/colorManipulator';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -27,7 +29,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -164,6 +166,24 @@ const styles = theme => ({
     }),
     marginLeft: 0,
   },
+  tableRow1 :{
+    '&:hover':{
+      backgroundColor: '#9694FF', // 기본 hover 색상
+
+    }
+    
+  },
+
+  tableRow2 :{
+    '&:hover':{
+      backgroundColor: '#9694FF', // 기본 hover 색상
+
+    }
+    
+  }
+  
+
+
   /////////////////끝////////////////////////////////
 });
 
@@ -185,6 +205,8 @@ class App extends Component {
       completed: 0,
       searchKeyword: '',
       isDrawer: false,
+      isInfo : false,
+      selectCustomer : {},
     }
   }
 
@@ -236,6 +258,9 @@ class App extends Component {
     this.setState(nextState);
 
   }
+
+
+
   filteredComponents = (customer) => {
     const { classes } = this.props;
 
@@ -246,7 +271,18 @@ class App extends Component {
     return customer.map((customer, index) => {
       let className = "";
       className = (index % 2 === 0) ? classes.tableRow1 : classes.tableRow2;
-      return <Customer stateRefresh={this.stateRefresh} className={className} key={customer.key} id={customer.id} name={customer.name} image={customer.image} birthday={customer.birthday} gender={customer.gender} job={customer.job} />
+      return (
+        <Customer
+          stateRefresh={this.stateRefresh}
+          className={className}
+          key={customer.key}
+          id={customer.id}
+          name={customer.name}
+          image={customer.image}
+          birthday={customer.birthday}
+          gender={customer.gender}
+          job={customer.job} />
+      )
     })
 
   }
@@ -343,6 +379,8 @@ class App extends Component {
           <div className={classes.menu} >
             <CustomerAdd stateRefresh={this.stateRefresh} />
           </div>
+
+          
           <Table className={classes.table}>
             <TableHead>
               <TableRow>

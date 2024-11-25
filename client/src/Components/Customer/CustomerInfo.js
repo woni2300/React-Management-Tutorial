@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 
-
 const styles = theme => ({
     hidden: {
         display: 'none'
@@ -26,24 +25,24 @@ const styles = theme => ({
     }
 });
 
-
-class CustomerAdd extends React.Component {
+class CustomerInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             file: null,
-            userName: '',
-            birthday: '',
-            gender: '',
-            job: '',
-            filename: '',
-            open: false,
+            userName: this.props.selectCustomer.userName,
+            birthday: this.props.selectCustomer.birthday,
+            gender: this.props.selectCustomer.gender,
+            job: this.props.selectCustomer.job,
+            filename: "",            
+            image : this.props.selectCustomer.image,
+            id : this.props.selectCustomer.id,
+            
         }
     }
 
-    handleClickOpen = () => {
-        this.setState({ open: true });
-    }
+
+  
     handleClickClose = () => {
         this.setState({
             file: null,
@@ -51,26 +50,16 @@ class CustomerAdd extends React.Component {
             birthday: '',
             gender: '',
             job: '',
-            filename: '',
-            open: false
+            filename: '',            
         })
+        this.props.onClose();
     }
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        this.addCustomer().then((res) => {
-            console.log(res);
-            this.setState({
-                file: null,
-                userName: '',
-                birthday: '',
-                gender: '',
-                job: '',
-                filename: '',
-                open:false
-            })
+        this.modCustomer().then((res) => {            
+            this.props.onClose();
             this.props.stateRefresh();
-
         }).catch((err) => {
             console.log(err);
         })
@@ -78,16 +67,19 @@ class CustomerAdd extends React.Component {
 
     }
 
-    addCustomer = () => {
+    modCustomer = () => {
 
-        const url = '/api/customerAdd';
+        const url = '/api/customerModify';
         const formData = new FormData();
 
-        formData.append('image', this.state.file);
+        formData.append('id', this.state.id);        
         formData.append('name', this.state.userName);
         formData.append('birthday', this.state.birthday);
         formData.append('gender', this.state.gender);
         formData.append('job', this.state.job);
+
+        if (this.state.file) formData.append('image', this.state.file);
+
         const config = {
             headers: {
                 'Content-type': 'multipart/form-data'
@@ -118,21 +110,17 @@ class CustomerAdd extends React.Component {
         this.setState(nextState);
     }
 
-
     render() {
         const { classes } = this.props;
 
-         // 선택된 파일에 대한 이미지 미리보기 URL
-         const previewImage = this.state.file ? URL.createObjectURL(this.state.file) : 'https://dummyimage.com/250/FFFFFF/00000';
-         
-        return (
-            <>                <div>
-                <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
-                    고객 추가하기
-                </Button>
+        // 선택된 파일에 대한 이미지 미리보기 URL
+        const previewImage = this.state.file ? URL.createObjectURL(this.state.file) : (this.state.image ? this.state.image : 'https://dummyimage.com/250/FFFFFF/00000'); 
 
-                <Dialog open={this.state.open} onClose={this.handleClickClose}>
-                    <DialogTitle>고객추가</DialogTitle>
+
+        return (
+            <>
+                <Dialog open={this.props.open} onClose={this.handleClickClose}>
+                    <DialogTitle>고객 정보 No. {this.props.selectCustomer.id} </DialogTitle>
                     <DialogContent className={classes.dialog}   >
                         <input
                             className={classes.hidden}
@@ -184,7 +172,7 @@ class CustomerAdd extends React.Component {
                             name="gender"
                             value={this.state.gender}
                             onChange={this.handleValueChange}>
-                            
+
                         </TextField>
 
                         <TextField
@@ -196,19 +184,15 @@ class CustomerAdd extends React.Component {
 
                     </DialogContent>
                     <DialogActions>
-                        <Button variant='contained' color='primary' onClick={this.handleFormSubmit}>추가하기</Button>
+                        <Button variant='contained' color='primary' onClick={this.handleFormSubmit}>수정하기</Button>
                         <Button variant='outlined' color='primary' onClick={this.handleClickClose}>닫기</Button>
                     </DialogActions>
                 </Dialog>
-            </div>
-
-
             </>
         )
     }
 
-
-
 }
 
-export default withStyles(styles)(CustomerAdd);
+
+export default withStyles(styles)(CustomerInfo);

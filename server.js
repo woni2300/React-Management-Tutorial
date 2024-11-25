@@ -80,10 +80,51 @@ app.post('/api/customerAdd', upload.single('image'), (req, res) => {
     });
 });
 
-app.delete('/api/customers/:id',(req,res)=>{
+
+// 고객 수정 API
+app.post('/api/customerModify', upload.single('image'), (req, res) => {
+    console.log('Fetching customersModify data...'); // 요청 로그
+    let sql = 'INSERT INTO CUSTOMER (image, name, birthDay, gender, job, createDate , isDeleted) VALUES (?, ?, ?, ?, ?, now(), 0 );';
+    let params = [];
+    // 파일 업로드 여부 확인
+    if (!req.file) {
+        // 데이터베이스에 삽입할 SQL 및 값 설정
+        sql = 'UPDATE CUSTOMER SET name=?, birthDay=?, gender=?, job=? WHERE ID=?;';
+        let name = req.body.name; // 요청 바디에서 이름
+        let birthday = req.body.birthday; // 요청 바디에서 생일
+        let gender = req.body.gender; // 요청 바디에서 성별
+        let job = req.body.job; // 요청 바디에서 직업
+        let id = req.body.id;
+        params = [name, birthday, gender, job, id];
+    } else {
+
+        // 데이터베이스에 삽입할 SQL 및 값 설정
+        sql = 'UPDATE CUSTOMER SET image=?, name=?, birthDay=?, gender=?, job=? WHERE ID=?;';
+        let image = '/image/' + req.file.filename; // 업로드된 이미지 경로
+        let name = req.body.name; // 요청 바디에서 이름
+        let birthday = req.body.birthday; // 요청 바디에서 생일
+        let gender = req.body.gender; // 요청 바디에서 성별
+        let job = req.body.job; // 요청 바디에서 직업
+        let id = req.body.id;
+        params = [image, name, birthday, gender, job, id];
+    }
+    console.log(params);
+
+    // SQL 실행 및 결과 처리
+    connection.query(sql, params, (err, rows, fields) => {
+        if (err) {
+            console.error('Database query error:', err); // 오류 로그
+            return res.status(500).send('Error while inserting data into database'); // 데이터 삽입 실패 시 500 에러 반환
+        }
+        res.status(201).send(rows); // 데이터 삽입 성공 시 응답 반환
+    });
+});
+
+
+app.delete('/api/customers/:id', (req, res) => {
     let sql = 'UPDATE CUSTOMER SET isDeleted = 1 WHERE id= ?';
     let params = [req.params.id];
-    connection.query(sql,params,(err,rows,fields)=>{
+    connection.query(sql, params, (err, rows, fields) => {
         res.send(rows);
     })
 })
