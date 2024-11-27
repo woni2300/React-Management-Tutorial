@@ -69,7 +69,7 @@ class CustomerInfo extends React.Component {
 
     modCustomer = () => {
 
-        const url = '/api/customerModify';
+        const url = '/api/customers/modify';
         const formData = new FormData();
 
         formData.append('id', this.state.id);        

@@ -88,7 +88,7 @@ class CustomerAdd extends React.Component {
 
     addCustomer = () => {
 
-        const url = '/api/customerAdd';
+        const url = '/api/customers/add';
         const formData = new FormData();
 
         formData.append('image', this.state.file);
@@ -152,7 +152,7 @@ class CustomerAdd extends React.Component {
         return (
             <>
                 <div>
-                    <Button variant="contained" color="primary" onClick={this.handleClickOpen} startIcon={<Add />}>
+                    <Button variant="contained" color="default" onClick={this.handleClickOpen} startIcon={<Add />}>
                         Add
                     </Button>
 
