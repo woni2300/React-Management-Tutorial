@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core'
+import { Button, TextField, withStyles } from '@material-ui/core'
 
 import Customer from './../Customer/Customer';
 import CustomerAdd from '../Customer/CustomerAdd'
@@ -9,7 +9,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import SearchIcon from '@material-ui/icons/Search';
 
 
 const drawerWidth = 240;
@@ -234,8 +236,24 @@ class PageCustomer extends React.Component {
 
     return (
       <Paper className={isDrawer ? classes.contentShift : classes.content} >
+        <Paper>
+          
+          <TextField
+            label='이름'
+            type='text'
+            name="userName"
+            value={this.state.userName}
+            onChange={this.handleValueChange} 
+            
+            />
+        </Paper>
+
+
         <div className={classes.menu} >
-          <CustomerAdd stateRefresh={this.stateRefresh} />
+          <ButtonGroup>
+            <Button variant="contained" color='primary' startIcon={<SearchIcon></SearchIcon>}>Search</Button>
+            <CustomerAdd stateRefresh={this.stateRefresh} />
+          </ButtonGroup>
         </div>
         <Table className={classes.table}>
           <TableHead>
