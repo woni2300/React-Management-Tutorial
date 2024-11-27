@@ -1,6 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core'
-import Toolbar from '@material-ui/core/Toolbar';
+
 import Customer from './../Customer/Customer';
 import CustomerAdd from '../Customer/CustomerAdd'
 import Paper from '@material-ui/core/Paper';
@@ -9,11 +9,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import InputBase from '@material-ui/core/InputBase';
-import SearchIcon from '@material-ui/icons/Search';
-import AppBar from '@material-ui/core/AppBar';
+
 
 const drawerWidth = 240;
 
@@ -70,7 +67,7 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
-    paddingRight:5
+    paddingRight: 5
   },
 
   searchIcon: {
@@ -238,37 +235,7 @@ class PageCustomer extends React.Component {
     return (
       <Paper className={isDrawer ? classes.contentShift : classes.content} >
         <div className={classes.menu} >
-          {/* <AppBar
-            
-            className={isDrawer ? classes.appBarShift : classes.appBar}
-
-          >
-            <Toolbar>
-
-              <Typography className={classes.title} variant="h5" noWrap >
-                * 고객관리
-              </Typography>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder="검색하기..."
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ 'aria-label': 'search' }}
-                  name="searchKeyword"
-                  value={this.state.searchKeyword}
-                  onChange={this.handleValueChange}
-                />
-                
-              </div>
-              <CustomerAdd stateRefresh={this.stateRefresh} />
-
-            </Toolbar>
-          </AppBar> */}
+          <CustomerAdd stateRefresh={this.stateRefresh} />
         </div>
         <Table className={classes.table}>
           <TableHead>

@@ -152,7 +152,7 @@ class CustomerAdd extends React.Component {
         return (
             <>
                 <div>
-                    <Button variant="contained" color="default" onClick={this.handleClickOpen} startIcon={<Add />}>
+                    <Button variant="contained" color="primary" onClick={this.handleClickOpen} startIcon={<Add />}>
                         Add
                     </Button>
 
