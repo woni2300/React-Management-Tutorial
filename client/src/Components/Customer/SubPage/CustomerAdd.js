@@ -199,19 +199,7 @@ class CustomerAdd extends React.Component {
                                 onChange={this.handleValueChange}
                                 defaultValue={'2024-11-22'}
                                 datatype='yyyy-MM-dd'
-                                InputLabelProps={{ shrink: true, }} />
-
-                            {/* 
-
-                        <TextField
-                            label='성별'
-                            type='text'
-                            name="gender"
-                            value={this.state.gender}
-                            onChange={this.handleValueChange}>
-                            
-                        </TextField>
-                        */}
+                                InputLabelProps={{ shrink: true, }} />                      
                             <div>성별
                                 <RadioGroup name="gender" label='성별' defaultValue={"남"} title='성별' onChange={this.handleValueChange} >
                                     <div className={classes.radioGroup}>

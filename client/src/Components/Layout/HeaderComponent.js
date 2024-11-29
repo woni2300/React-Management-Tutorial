@@ -168,6 +168,14 @@ const styles = theme => ({
 
     }
 
+  },
+  home: {
+    color: "white",
+    textDecorationLine: 'none',
+    '&:hover': {        
+      textDecoration : 'underline'
+    }
+
   }
 
 
@@ -252,14 +260,8 @@ class HeaderComponent extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              <div onClick={() => { this.handleHeaderMenuClick('MENU000') }}> HOME</div>
+              <Link className={classes.home} to="/">HOME</Link> 
             </Typography>
-
-            <Typography className={classes.title} variant="h6" noWrap>
-              <div onClick={() => { this.handleHeaderMenuClick('MENU001') }}> 고객관리</div>
-            </Typography>
-
-
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -296,10 +298,10 @@ class HeaderComponent extends React.Component {
           </div>
           <Divider />
           <List>
-            {['고객관리'].map((text, index) => (
-              <ListItem button key={text}>
+            {[{text: '고객관리',link:'/client'}].map((menu, index) => (
+              <ListItem button key={menu.text} component={Link} to="/customer"  >                
                 <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={menu.text}  />
               </ListItem>
             ))}
           </List>

@@ -37,6 +37,10 @@ app.use('/image/:date', (req, res, next) => {
 const customersRoute = require('./routes/customers/customers');
 app.use('/api/customers', customersRoute);
 
+// 고객 관련 라우트
+const userRoute = require('./routes/user/user');
+app.use('/api/users', userRoute);
+
 
 // 서버 시작
 app.listen(port, () => {

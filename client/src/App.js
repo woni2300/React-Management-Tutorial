@@ -3,8 +3,8 @@ import './App.css';
 import { withStyles } from '@material-ui/core/styles';
 import HeaderComponent from '../../client/src/Components/Layout/HeaderComponent'
 import MainComponent from './Components/Layout/MainComponent';
-import {BrowserRouter} from 'react-router-dom';
-
+import { BrowserRouter } from 'react-router-dom';
+import PageCustomer from './Components/Customer/PageCustomer';
 
 
 const styles = theme => ({
@@ -31,7 +31,15 @@ class App extends Component {
     this.state = {
       searchKeyword: '',
       menuId: '',
-      addTabs: [],
+      tabs: [
+        {
+          label: "Home",
+          path: "/customer",
+          component: <PageCustomer/>,
+          state: { data: "Customer Data" } // 각 탭 별로 상태를 관리
+        },
+      ],
+      selectedTabIndex: 0,
     }
   }
 
@@ -50,6 +58,29 @@ class App extends Component {
   }
 
 
+  addTab = () => {
+    if (this.state.tabs.length >= 9) {
+      return;
+    }
+
+    const newTab = {
+      label: `Tab ${this.state.tabs.length + 1}`,
+      path: `/tab-${this.state.tabs.length + 1}`,
+      component: <div>New Tab Content {this.state.tabs.length + 1}</div>,
+      state: { data: `Tab ${this.state.tabs.length + 1} Data` }, // 새 탭에 대한 독립적인 상태
+    };
+
+    this.setState(prevState => ({
+      tabs: [...prevState.tabs, newTab],
+      selectedTabIndex: prevState.tabs.length,  // 새로 추가된 탭으로 이동
+    }));
+  };
+
+  handleTabChange = (event, newIndex) => {
+    
+    this.setState({ selectedTabIndex: newIndex });
+  };
+
   render() {
 
     const { classes } = this.props; // props에서 classes 추출
@@ -62,12 +93,16 @@ class App extends Component {
             <HeaderComponent handleValueChange={this.handleValueChange} handleHeaderMenuClick={this.handleHeaderMenuClick} ></HeaderComponent>
           </header>
           <main>
-            <MainComponent searchKeyword={this.state.searchKeyword} menuId={this.state.menuId} addTabs={this.state.addTabs} ></MainComponent>
+            <MainComponent 
+              menuId={this.state.menuId}
+              tabs={this.state.tabs}
+              selectedTabIndex={this.state.selectedTabIndex}
+              onTabChange={this.handleTabChange}
+              onAddTab={this.addTab}
+            ></MainComponent>
           </main>
         </div>
       </BrowserRouter>
-
-
     );
   }
 }

@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import { Radio, RadioGroup } from '@material-ui/core';
 
 const styles = theme => ({
     hidden: {
@@ -166,15 +167,14 @@ class CustomerInfo extends React.Component {
                             InputLabelProps={{ shrink: true, }} />
 
 
-                        <TextField
-                            label='성별'
-                            type='text'
-                            name="gender"
-                            value={this.state.gender}
-                            onChange={this.handleValueChange}>
-
-                        </TextField>
-
+                        <div>성별
+                            <RadioGroup name="gender" label='성별' defaultValue={this.state.gender} title='성별' onChange={this.handleValueChange} >
+                                <div className={classes.radioGroup}>
+                                    <Radio i label="남" title='남' value={'남'}></Radio>남
+                                    <Radio label="여" title='여' value={'여'}></Radio>여
+                                </div>
+                            </RadioGroup>
+                        </div>
                         <TextField
                             label='직업'
                             type='text'

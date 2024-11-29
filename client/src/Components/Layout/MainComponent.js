@@ -1,223 +1,147 @@
-import React from 'react'
-
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import {  Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import PageCustomer from '../Customer/PageCustomer';
-
-import PropTypes from 'prop-types';
-
+import LoginPage from '../Login/LoginPage';
+import TabPanel from './TabPanel';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 
 const drawerWidth = 240;
 
+class MainComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: 0, // 현재 선택된 탭
+            tabs: [
+                { label: "Customer", path: "/customer", component: <PageCustomer /> }, // 기본 탭
+            ],
+        };
+    }
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`scrollable-auto-tabpanel-${index}`}
-        aria-labelledby={`scrollable-auto-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box p={3}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
-  };
-
-  function a11yProps(index) {
-    return {
-      id: `scrollable-auto-tab-${index}`,
-      'aria-controls': `scrollable-auto-tabpanel-${index}`,
+    handleChange = (event, newValue) => {
+        this.setState({ value: newValue });
     };
-  }
 
-  
+    handleAddTab = () => {
+        if (this.state.tabs.length >= 9) {
+            return; // 9개 탭 이상은 추가되지 않도록 종료
+        }
+
+        // 새로운 탭을 추가하는 함수
+        const newTab = {
+            label: `Tab ${this.state.tabs.length + 1}`,  // 새로운 탭 이름
+            path: `/tab-${this.state.tabs.length + 1}`, // 라우트 경로
+            component: <Typography>New Tab Content {this.state.tabs.length + 1}</Typography>, // 탭에 해당하는 컴포넌트
+        };
+
+        // 탭을 추가하고, 새 탭으로 상태를 갱신
+        this.setState(prevState => {
+            const newTabs = [...prevState.tabs, newTab];
+            return {
+                tabs: newTabs,
+                value: newTabs.length - 1, // 새로 추가된 탭으로 이동
+            };
+        });
+    };
+
+    isAuthenticated = () => {
+        // 인증 체크 예시
+        return localStorage.getItem('authToken') !== null;
+    };
+
+    render() {
+        const { classes, tabs, selectedTabIndex, onTabChange, onAddTab  } = this.props;
+        const { value } = this.state;
+        
+
+        return (
+            <div className={classes.root}>
+                {/* Tabs Menu */}
+                <div className={classes.tabsWrapper}>
+                    <Tabs
+                        value={selectedTabIndex}
+                        onChange={onTabChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        aria-label="tabs"
+                    >
+                        {tabs.map((tab, index) => (
+                            <Tab
+                                key={index}
+                                label={tab.label}
+                                className={classes.tab}
+                                id={`tab-${index}`}
+                                aria-controls={`tabpanel-${index}`}
+                            />
+                        ))}
+                    </Tabs>
+                    {/* + 버튼 클릭 시 탭 추가 */}
+                    <IconButton onClick={onAddTab} className={classes.addTabButton}>
+                        <AddIcon />
+                    </IconButton>
+                </div>
+
+                <div className={classes.content}>
+                    <Routes>
+                        {/* 인증되지 않은 경우 */}
+                        {!this.isAuthenticated() && (
+                            <Route path="*" element={<Navigate to="/login" replace />} />
+                        )}
+                        {/* 인증된 경우 */}
+                        {this.isAuthenticated() && (
+                            <>
+                                <Route path="/" element={<></>} />
+                                <Route path="/customer" element={<TabPanel value={value} index={0}>{<PageCustomer></PageCustomer>}</TabPanel>} />
+                                {/* 동적으로 추가되는 탭에 대한 Route */}
+                                {tabs.map((tab, index) => (
+                                    <Route
+                                        key={index}
+                                        path={tab.path}
+                                        element={<TabPanel value={value} index={index}>{tab.component}</TabPanel>}
+                                    />
+                                ))}
+                            </>
+                        )}
+                        {/* 로그인 페이지 */}
+                        <Route path="/login" element={<LoginPage />} />
+                    </Routes>
+                </div>
+            </div>
+        );
+    }
+}
+
 const styles = theme => ({
     root: {
         flexGrow: 1,
         width: '100%',
-        backgroundColor: theme.palette.background.paper,
-        marginTop:'7vh',
-      },
-
-    appBar: {
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
+        backgroundColor: "#F3EDC8",
+        marginTop: '7vh',
     },
-    appBarShift: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-
-    paper: {
-        marginLeft: 18,
-        marginRight: 18
-    },
-    menu: {
-        marginTop: 15,
-        marginBottom: 15,
+    tabsWrapper: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
-    table: {
-        minWidth: 1080,
-    },
-    tableHead: {
-        fontWeight: 'bold'
-    },
-
-    progress: {
-        margin: theme.spacing(2)
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    hide: {
-        display: 'none',
-    },
-    title: {
-        flexGrow: 1,
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
+    tab: {
+        borderRight: `1px solid ${theme.palette.divider}`,
+        '&:last-child': {
+            borderRight: 'none',
         },
     },
-
-    searchIcon: {
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputRoot: {
-        color: 'inherit',
-    },
-    inputInput: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
-    },
-
-
-    drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(0, 1),
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
+    addTabButton: {
+        marginLeft: theme.spacing(1),
     },
     content: {
         flexGrow: 1,
         marginTop: theme.spacing(5),
         padding: theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: 0,
     },
-    contentShift: {
-        marginTop: theme.spacing(9),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: 0,
-    },
-    tableRow1: {
-        '&:hover': {
-            backgroundColor: '#9694FF', // 기본 hover 색상
-
-        }
-
-    },
-
-    tableRow2: {
-        '&:hover': {
-            backgroundColor: '#9694FF', // 기본 hover 색상
-
-        }
-
-    }
-
-
-
-    /////////////////끝////////////////////////////////
 });
 
-
-
-class MainComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            customers: '',
-            completed: 0,
-            searchKeyword: this.props.searchKeyword,
-            isDrawer: false,
-            isInfo: false,
-            selectCustomer: {},
-            value: 0,
-            menuId: '',
-        }
-    }
-
-    handleChange = (event, newValue) => {
-        this.setState({ value: newValue });
-      };
-    render() {
-        const { classes } = this.props;
-        const { value } = this.state;
-    
-        return (
-            <>
-                <div className={classes.root}>
-
-                    
-                            <Routes>
-                                <Route path="/" element={<></>}></Route>
-                                <Route path="/customer" element={<PageCustomer />} />
-                            </Routes>
-                
-                </div>
-
-
-
-            </>
-
-        )
-    }
-}
-
-export default withStyles(styles)(MainComponent)
+export default withStyles(styles)(MainComponent);
