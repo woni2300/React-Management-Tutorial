@@ -1,8 +1,6 @@
 import React from 'react'
-import { Button, CardHeader, TextField, Typography, withStyles } from '@material-ui/core'
-import Avatar from '@material-ui/core/Avatar';
-
 import Customer from './SubPage/Customer';
+import { Button, CardHeader, TextField, Typography, withStyles } from '@material-ui/core'
 import CustomerAdd from './SubPage/CustomerAdd'
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -12,164 +10,166 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import SearchIcon from '@material-ui/icons/Search';
+import {colProperties} from './Data/DataCollection.ts'
 import DescriptionIcon from '@material-ui/icons/Description';
 import ExcelJS from "exceljs";
 import { saveAs } from 'file-saver';
 import { Radio, RadioGroup } from '@material-ui/core';
-
 import Card from '@material-ui/core/Card';
-
 import CardContent from '@material-ui/core/CardContent';
+import Box from '@material-ui/core/Box'
+
+
+
+
 
 const drawerWidth = 240;
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    minWidth: 1080,
-  },
-  card:{
-    minWidth: 275,
-    backgroundColor: "#F1F0E8"  
-  },
-  
-
-  appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-
-  paper: {
-    marginLeft: 18,
-    marginRight: 18
-  },
-  menu: {
-    marginTop: 15,
-    marginBottom: 15,
-    display: 'flex',
-    justifyContent: 'left',
-  },
-  table: {
-    minWidth: 1080,
-    backgroundColor: "#F1F0E8"  
-  },
-  tableHead: {
-    fontWeight: 'bold',
-    backgroundColor:'#89A8B2'
-
-  },
-
-  progress: {
-    margin: theme.spacing(2)
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: 'none',
-  },
-  title: {
-    flexGrow: 1,
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+    root: {
+      width: '100%',
+      minWidth: 1080,
     },
-    paddingRight: 5
-  },
-
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
+    card: {
+      minWidth: 275,
+      backgroundColor: "#F1F0E8"
+    },
+  
+  
+    appBar: {
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
+    appBarShift: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+  
+    paper: {
+      marginLeft: 18,
+      marginRight: 18
+    },
+    menu: {
+      marginTop: 15,
+      marginBottom: 15,
+      display: 'flex',
+      justifyContent: 'left',
+    },
+    table: {
+      minWidth: 1080,
+      backgroundColor: "#F1F0E8"
+    },
+    tableHead: {
+      fontWeight: 'bold',
+      backgroundColor: '#89A8B2'
+  
+    },
+  
+    progress: {
+      margin: theme.spacing(2)
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+    hide: {
+      display: 'none',
+    },
+    title: {
+      flexGrow: 1,
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
+      paddingRight: 5
+    },
+  
+    searchIcon: {
+      padding: theme.spacing(0, 2),
+      height: '100%',
+      position: 'absolute',
+      pointerEvents: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    inputRoot: {
+      color: 'inherit',
+    },
+    inputInput: {
+      padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        width: '12ch',
+        '&:focus': {
+          width: '20ch',
+        },
       },
     },
-  },
-
-
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
-  },
-  content: {
-    flexGrow: 1,
-    marginTop: theme.spacing(5),
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: 0,
-  },
-  contentShift: {
-    marginTop: theme.spacing(9),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-  tableRow1: {
-
-    
-    '&:hover': {
-      backgroundColor: '#9694FF', // 기본 hover 색상
-
+  
+  
+    drawerHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: theme.spacing(0, 1),
+      ...theme.mixins.toolbar,
+      justifyContent: 'flex-end',
+    },
+    content: {
+      flexGrow: 1,
+      marginTop: theme.spacing(5),
+      padding: theme.spacing(3),
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginLeft: 0,
+    },
+    contentShift: {
+      marginTop: theme.spacing(9),
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    },
+    tableRow1: {
+  
+  
+      '&:hover': {
+        backgroundColor: '#9694FF', // 기본 hover 색상
+  
+      }
+  
+    },
+  
+    tableRow2: {
+      backgroundColor: '#E5E1DA', // 기본 hover 색상
+  
+      '&:hover': {
+        backgroundColor: '#9694FF', // 기본 hover 색상
+  
+      }
+  
+    },
+    searchTypography: {
+      display: 'flex',
+      flexFlow: 'rows'
     }
-
-  },
-
-  tableRow2: {
-    backgroundColor: '#E5E1DA', // 기본 hover 색상
-
-    '&:hover': {
-      backgroundColor: '#9694FF', // 기본 hover 색상
-
-    }
-
-  },
-  searchTypography: {
-    display:'flex',
-    flexFlow : 'rows'
-  }
-
-
-
-  /////////////////끝////////////////////////////////
-});
-
-
+  
+  
+  
+    /////////////////끝////////////////////////////////
+  });
+  
 
 class PageCustomer extends React.Component {
   constructor(props) {
@@ -181,9 +181,9 @@ class PageCustomer extends React.Component {
       isDrawer: false,
       isInfo: false,
       selectCustomer: {},
-      userName : '',
-      gender : '',
-      job : '',
+      userName: '',
+      gender: '',
+      job: '',
     }
   }
 
@@ -207,7 +207,7 @@ class PageCustomer extends React.Component {
     }).catch((err) => console.log(err));
   }
 
-  
+
 
   stateRefresh = () => {
     this.setState({
@@ -226,7 +226,7 @@ class PageCustomer extends React.Component {
     let nextState = {};
     nextState[e.target.name] = e.target.value;
     this.setState(nextState);
-}
+  }
 
 
   filteredComponents = (customer) => {
@@ -260,7 +260,10 @@ class PageCustomer extends React.Component {
 
   handleExcelPrintClick = async () => {
 
-    let  customer = this.state.customers;
+    let customer = this.state.customers;
+    if(!customer || customer.length === 0){
+      return;
+    }
     // 필터링 조건을 추가
     customer = customer.filter((c) => {
       return (
@@ -280,7 +283,7 @@ class PageCustomer extends React.Component {
       .padStart(2, "0")}${now.getSeconds().toString().padStart(2, "0")}`;
     const fileName = `customers_${formattedDate}${formattedTime}.xlsx`;
 
-    if(!customer|| customer.length === 0) {
+    if (!customer || customer.length === 0) {
       alert("내용이 존재하지 않습니다.");
       return;
     }
@@ -294,16 +297,16 @@ class PageCustomer extends React.Component {
         직업: m.job,
       };
     });
-  
-    
+
+
     // 엑셀 생성 로직
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Sheet1");
-  
+
     // 헤더 설정
     const headerKeys = Object.keys(data[0]);
     worksheet.addRow(headerKeys);
-  
+
     const headerRow = worksheet.getRow(1);
     headerRow.eachCell((cell) => {
       cell.fill = {
@@ -319,7 +322,7 @@ class PageCustomer extends React.Component {
         right: { style: "thin" },
       }; // 테두리 설정
     });
-  
+
     // 데이터 추가
     data.forEach((dataRow) => {
       worksheet.addRow(Object.values(dataRow));
@@ -337,18 +340,18 @@ class PageCustomer extends React.Component {
       });
     });
 
-  
+
     // 열 너비 조정
     worksheet.columns = headerKeys.map((key, index) => {
       const maxLength = Math.max(
         key.length, // 헤더의 길이
         ...data.map((row) =>
-          row[key] ? row[key].toString().length +2 : 0 // 데이터의 길이
+          row[key] ? row[key].toString().length + 2 : 0 // 데이터의 길이
         )
       );
       return { width: maxLength + 2 }; // 여유 공간 추가
     });
-  
+
     // 엑셀 파일 다운로드
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: "application/octet-stream" });
@@ -357,9 +360,7 @@ class PageCustomer extends React.Component {
 
   render() {
     const { classes } = this.props; // props에서 classes 추출
-    const colProperties = [
-      "번호", "이미지", "이름", "생년월일", "성별", "직업", "설정"
-    ]
+   
     const { isDrawer } = this.state;
 
 
@@ -372,51 +373,57 @@ class PageCustomer extends React.Component {
           <CardHeader title={'검색'} />
           <CardContent className={classes.cardContent} >
             <Typography className={classes.searchTypography} >
-              <TextField
-                label='이름'
-                type='text'
-                name="userName"
-                value={this.state.userName}
-                onChange={this.handleValueChange}
-              />
+              <Box color="text.primary" style={{ padding: 10 }} component="span" m={1}>
+                <TextField
+                  label='이름'
+                  type='text'
+                  name="userName"
+                  value={this.state.userName}
+                  onChange={this.handleValueChange}
+                />
+              </Box>
               &nbsp;
               &nbsp;
               &nbsp;
-              <div>성별
-                <RadioGroup name="gender" label='성별' defaultValue={""} title='성별' onChange={this.handleValueChange} >
-                  <div className={classes.radioGroup}>
-                    <Radio i label="-" title='-' value={''}></Radio>-
-                    <Radio i label="남" title='남' value={'남'}></Radio>남
-                    <Radio label="여" title='여' value={'여'}></Radio>여
-                  </div>
-                </RadioGroup>
-              </div>
+              <Box color="text.primary" style={{ padding: 10 }} component="span" m={1}>
 
-              &nbsp;
-              &nbsp;
-              &nbsp;
-              <TextField
-                label='직업'
-                type='text'
-                name="job"
-                value={this.state.job}
-                onChange={this.handleValueChange}
-              />
+                <div>성별
+                  <RadioGroup name="gender" label='성별' defaultValue={""} title='성별' onChange={this.handleValueChange} >
+                    <div className={classes.radioGroup}>
+                      <Radio i label="-" title='-' value={''}></Radio>-
+                      <Radio i label="남" title='남' value={'남'}></Radio>남
+                      <Radio label="여" title='여' value={'여'}></Radio>여
+                    </div>
+                  </RadioGroup>
+                </div>
+              </Box>
+              <Box color="text.primary" style={{ padding: 10 }} component="span" m={1}>
+
+                <TextField
+                  label='직업'
+                  type='text'
+                  name="job"
+                  value={this.state.job}
+                  onChange={this.handleValueChange}
+                />
+              </Box>
             </Typography>
-       
-      
           </CardContent>
         </Card>
         <div className={classes.menu} >
           <ButtonGroup >
-            <CustomerAdd stateRefresh={this.stateRefresh} />      
-            <Button variant="contained" color="primary" onClick={this.handleExcelPrintClick} startIcon={<DescriptionIcon />} >Excel</Button>
+            <Box color="text.primary" style={{ padding: 5 }} component="span" m={1}>
+              <CustomerAdd stateRefresh={this.stateRefresh} />
+            </Box>
+            <Box color="text.primary" style={{ padding: 5 }} component="span" m={1}>
+              <Button variant="contained" color="primary" onClick={this.handleExcelPrintClick} startIcon={<DescriptionIcon />} >Excel</Button>
+            </Box>
           </ButtonGroup>
         </div>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              {
+              { colProperties && colProperties.length >0 &&
                 colProperties.map(col => {
                   return <TableCell key={col} className={classes.tableHead}>{col}</TableCell>
                 })
