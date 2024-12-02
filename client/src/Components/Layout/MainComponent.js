@@ -57,36 +57,9 @@ class MainComponent extends Component {
     render() {
         const { classes, tabs, selectedTabIndex, onTabChange, onAddTab  } = this.props;
         
-        const moveToLink  = tabs[selectedTabIndex].path;
-        console.log(moveToLink);
-
+  
         return (
             <div className={classes.root}>
-                {/* Tabs Menu */}
-                <div className={classes.tabsWrapper}>
-                    <Tabs
-                        value={selectedTabIndex}
-                        onChange={onTabChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        aria-label="tabs"
-                    >
-                        {tabs.map((tab, index) => (
-                            <Tab
-                                key={index}
-                                label={tab.label}
-                                className={classes.tab}
-                                id={`tab-${index}`}
-                                aria-controls={`tabpanel-${index}`}
-                            />
-                        ))}
-                    </Tabs>
-                    {/* + 버튼 클릭 시 탭 추가 */}
-                    <IconButton onClick={onAddTab} className={classes.addTabButton}>
-                        <AddIcon />
-                    </IconButton>
-                </div>
-
                 <div className={classes.content}>
                     <Routes>
                         {/* 인증되지 않은 경우 */}
@@ -115,7 +88,7 @@ const styles = theme => ({
         flexGrow: 1,
         width: '100%',
         backgroundColor: "#F3EDC8",
-        marginTop: '7vh',
+        marginTop: '3vh',
     },
     tabsWrapper: {
         display: 'flex',
@@ -133,7 +106,6 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
-        marginTop: theme.spacing(5),
         padding: theme.spacing(3),
     },
 });
