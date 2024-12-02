@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate,Outlet } from 'react-router-dom';
 import PageCustomer from '../Customer/PageCustomer';
 import LoginPage from '../Login/LoginPage';
-import TabPanel from './TabPanel';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
-const drawerWidth = 240;
+
+
 
 class MainComponent extends Component {
     constructor(props) {
@@ -56,8 +56,9 @@ class MainComponent extends Component {
 
     render() {
         const { classes, tabs, selectedTabIndex, onTabChange, onAddTab  } = this.props;
-        const { value } = this.state;
         
+        const moveToLink  = tabs[selectedTabIndex].path;
+        console.log(moveToLink);
 
         return (
             <div className={classes.root}>
@@ -94,18 +95,11 @@ class MainComponent extends Component {
                         )}
                         {/* 인증된 경우 */}
                         {this.isAuthenticated() && (
-                            <>
-                                <Route path="/" element={<></>} />
-                                <Route path="/customer" element={<TabPanel value={value} index={0}>{<PageCustomer></PageCustomer>}</TabPanel>} />
-                                {/* 동적으로 추가되는 탭에 대한 Route */}
-                                {tabs.map((tab, index) => (
-                                    <Route
-                                        key={index}
-                                        path={tab.path}
-                                        element={<TabPanel value={value} index={index}>{tab.component}</TabPanel>}
-                                    />
-                                ))}
-                            </>
+                            <Route element={<><Outlet></Outlet></>}>
+                                <Route path="*" element={<Navigate to={"/home"} replace />} />
+                                <Route path="/home" element={<></>} />
+                                <Route path="/customer" element={<PageCustomer />} />
+                            </Route>
                         )}
                         {/* 로그인 페이지 */}
                         <Route path="/login" element={<LoginPage />} />

@@ -33,7 +33,7 @@ class App extends Component {
       menuId: '',
       tabs: [
         {
-          label: "Home",
+          label: "고객 관리",
           path: "/customer",
           component: <PageCustomer/>,
           state: { data: "Customer Data" } // 각 탭 별로 상태를 관리
@@ -65,7 +65,7 @@ class App extends Component {
 
     const newTab = {
       label: `Tab ${this.state.tabs.length + 1}`,
-      path: `/tab-${this.state.tabs.length + 1}`,
+      path: `/`,
       component: <div>New Tab Content {this.state.tabs.length + 1}</div>,
       state: { data: `Tab ${this.state.tabs.length + 1} Data` }, // 새 탭에 대한 독립적인 상태
     };
@@ -77,7 +77,7 @@ class App extends Component {
   };
 
   handleTabChange = (event, newIndex) => {
-    
+    console.log(this.state.tabs[newIndex])
     this.setState({ selectedTabIndex: newIndex });
   };
 

@@ -261,7 +261,7 @@ class HeaderComponent extends React.Component {
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
               <Link className={classes.home} to="/">HOME</Link> 
-            </Typography>
+            </Typography>            
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
