@@ -21,8 +21,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import { Link } from 'react-router-dom';
 import { alpha, withStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 const drawerWidth = 240;
 
@@ -193,6 +196,8 @@ class HeaderComponent extends React.Component {
       isDrawer: false,
       isInfo: false,
       selectCustomer: {},
+      anchorEl : null,
+      isMenuOpen : false,
     };
   }
 
@@ -205,6 +210,21 @@ class HeaderComponent extends React.Component {
     this.setState({ isDrawer: false });
   };
 
+  handleProfileMenuOpen = (event) => {    
+    this.setState({anchorEl:event.currentTarget,isMenuOpen:true })
+  };
+
+  handleMenuClose = () => {
+    this.setState({anchorEl:null,isMenuOpen:false })    
+  };
+
+
+  
+  handleLogOut = () => {
+    localStorage.removeItem('authToken')    
+    this.setState({anchorEl:null,isMenuOpen:false })    
+    window.location.reload();
+  };
 
 
   componentDidMount() {
@@ -240,6 +260,24 @@ class HeaderComponent extends React.Component {
   render() {
     const { classes } = this.props; // props에서 classes 추출
     const { isDrawer } = this.state;
+    const menuId = 'primary-search-account-menu';
+    const renderMenu = (
+      <Menu
+        anchorEl={this.state.anchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={this.state.isMenuOpen}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={this.handleLogOut}>LogOut</MenuItem>
+      </Menu>
+    );
+
+    
     return (
       <>
         <CssBaseline />
@@ -278,6 +316,17 @@ class HeaderComponent extends React.Component {
                 onChange={this.handleValueChange}
               />
             </div>
+
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={this.handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -307,6 +356,7 @@ class HeaderComponent extends React.Component {
           </List>
 
         </Drawer>
+        {renderMenu}
       </>
     )
   }
